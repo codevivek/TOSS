@@ -1,10 +1,13 @@
 extends layouts/login-layout.pug
 
 block content 
-    .loginContainer 
-        h1 Login 
+    .bg
+    .bg.bg2
+    .bg.bg3
+    .loginContainer
+        h2 Login 
         form(method="post") 
             input(type="text", name="logUserName",placeholder="Username or Email" , required="")
             input(type="text", name="logPassword",placeholder="Password" , required="")
-            input(type="submit", value="Login")
+            input(type="submit", value="Sign In")
         a(href="/register") Need an account? Register here. 
