@@ -4,6 +4,8 @@
     --buttonHoverBg: #eeeeef;
     --lightGrey: rgb(211, 214, 215);
     --spacing: 15px;
+    --greyText: rgb(101, 119, 134);
+    --greyButtonText: rgba(0,0,0,0.34);
 }
 
 *{
