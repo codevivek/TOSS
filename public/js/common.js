@@ -92,6 +92,14 @@ function getPostIdFromElement(element) {
 
 function createPostHtml(postData) {
     
+    if(postData == null) return alert("post object is null");
+
+    var isRetoss = postData.retossData !== undefined;
+    var retossedBy = isRetoss ? postData.postedBy.userName : null;
+    postData = isRetoss ? postData.retossData : postData;
+
+    console.log(isRetoss);
+    
     var postedBy = postData.postedBy;
 
     if(postedBy._id === undefined) {
@@ -101,9 +109,20 @@ function createPostHtml(postData) {
     var displayName = postedBy.fullname;
     var timestamp = timeDifference(new Date(), new Date(postData.createdAt));
     var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
+    var retossButtonActiveClass = postData.retossUsers.includes(userLoggedIn._id) ? "active" : "";
+
+    var retossText = '';
+    if(isRetoss) {
+        retossText = `<span>
+                        <i class='bx bx-repost'></i>
+                        Retossed by <a href='/profile/${retossedBy}'>@${retossedBy}</a>    
+                    </span>`
+    }
 
     return `<div class='post' data-id='${postData._id}'>
-
+                <div class='postActionContainer'>
+                    ${retossText}
+                </div>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
                         <img src='${postedBy.profilePic}'>
@@ -124,15 +143,17 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer green'>
-                            <button class='retoss'>
+                            <button class='retossButton ${retossButtonActiveClass}'>
                                 <i class='bx bx-repost'></i>
+                                <span>${postData.retossUsers.length || ""}</span>
                             </button>
-                        </div>
+                            </div>
+
                             <div class='postButtonContainer red'>
                             <button class='likeButton ${likeButtonActiveClass}'>
                             <i class='bx bx-like'></i>
                             <span>${postData.likes.length || ""}</span>
-                        </button>
+                            </button>
                             </div>
                         </div>
                     </div>
