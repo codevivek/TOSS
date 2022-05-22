@@ -69,4 +69,46 @@ router.put("/:id/like", async (req, res, next) => {
     res.status(200).send(post)
 })
 
+router.post("/:id/retoss", async (req, res, next) => {
+    var postId = req.params.id;
+    var userId = req.session.user._id;
+
+    // Try and delete retoss
+    var deletedPost = await Post.findOneAndDelete({ postedBy: userId, retossData: postId })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+
+    var option = deletedPost != null ? "$pull" : "$addToSet";
+
+    var repost = deletedPost;
+
+    if (repost == null) {
+        repost = await Post.create({ postedBy: userId, retossData: postId })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(400);
+        })
+    }
+
+    // Insert user like
+    req.session.user = await User.findByIdAndUpdate(userId, { [option]: { retoss: repost._id } }, { new: true })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+
+    // Insert post like
+    var post = await Post.findByIdAndUpdate(postId, { [option]: { retossUsers: userId } }, { new: true })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+
+
+    res.status(200).send(post)
+})
+
+
 module.exports = router;
