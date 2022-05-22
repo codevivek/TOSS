@@ -6,7 +6,8 @@ const UserSchema=new Schema({
     userName:{type:String,required:true,trim:true,sparse:true},
     email:{type:String,required:true,trim:true,unique:true},
     password:{type:String,required:true},
-    profilePic:{type:String,default:"/img/user.png"}
+    profilePic:{type:String,default:"/img/user.png"},
+    likes: [{type:Schema.Types.ObjectId,ref:'Post'}]
 },{timestamps:true});
 
 var User=mongoose.model('User',UserSchema);
