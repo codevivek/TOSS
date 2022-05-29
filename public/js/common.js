@@ -198,7 +198,7 @@ function createPostHtml(postData, largeFont=false) {
 
     var buttons = "";
     if (postData.postedBy._id == userLoggedIn._id) {
-        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class='bx bx-x'></i></button>`;
+        buttons = `<button data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="#deletePostModal"><i class='bx bxs-trash'></i></button>`;
     }
 
     return `<div class='post ${largeFontClass}' data-id='${postData._id}'>
