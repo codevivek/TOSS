@@ -35,7 +35,7 @@ function outputUsers(results, container) {
 
 function createUserHtml(userData, showFollowButton) {
 
-    var name = userData.firstName + " " + userData.lastName;
+    var name = userData.fullname;
     var isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
     var text = isFollowing ? "Following" : "Follow"
     var buttonClass = isFollowing ? "followButton following" : "followButton"
