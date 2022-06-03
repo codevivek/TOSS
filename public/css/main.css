@@ -270,7 +270,7 @@ button span{
     padding: var(--spacing);
 }
 
-.coverPhotoContainer {
+.coverPhotoSection {
     height: 180px;
     background-color: #ede9e9;
     position: relative;
@@ -313,7 +313,7 @@ button span{
 .followButton:hover {
     background-color: black;
     color: white;
-    border-color: black;
+    border-color: var(--red);
 }
 
 .followButton.following {
@@ -341,7 +341,7 @@ button span{
 }
 
 .followersContainer a:hover {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--red);
 }
 
 .tabsContainer {
@@ -399,4 +399,39 @@ button span{
 
 .userImageContainer:hover .profilePictureButton {
     display: block;
+}
+
+#imagePreview,
+#coverPreview {
+    width: 100%;
+    display: block;
+ 
+    
+    max-width: 100%;
+}
+
+.profilePictureButton,
+.coverPhotoButton {
+    position: absolute;
+    font-size: 50px;
+    color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoSection:hover .coverPhotoButton {
+    display: block;
+}
+
+.coverPhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.coverPhotoContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
