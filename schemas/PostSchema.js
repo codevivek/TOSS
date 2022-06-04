@@ -9,7 +9,8 @@ const PostSchema = new Schema({
     likes: [{type:Schema.Types.ObjectId,ref:'User'}],
     retossUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     retossData: { type: Schema.Types.ObjectId, ref: 'Post' },
-    replyTo: { type: Schema.Types.ObjectId, ref: 'Post' }
+    replyTo: { type: Schema.Types.ObjectId, ref: 'Post' },
+    pinned: Boolean
 }, { timestamps: true });
 
 var Post = mongoose.model('Post', PostSchema);
