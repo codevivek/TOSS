@@ -8,12 +8,18 @@ const Post = require('../../schemas/PostSchema');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", async (req, res, next) => {
+
     var searchObj = req.query;
     
     if(searchObj.isReply !== undefined) {
         var isReply = searchObj.isReply == "true";
         searchObj.replyTo = { $exists: isReply };
         delete searchObj.isReply;
+    }
+
+    if(searchObj.search !== undefined) {
+        searchObj.content = { $regex: searchObj.search, $options: "i" };
+        delete searchObj.search;
     }
 
     if(searchObj.followingOnly !== undefined) {
