@@ -67,6 +67,18 @@ $("#deletePostModal").on("show.bs.modal", (event) => {
     $("#deletePostButton").data("id", postId);
 })
 
+$("#confirmPinModal").on("show.bs.modal", (event) => {
+    var button = $(event.relatedTarget);
+    var postId = getPostIdFromElement(button);
+    $("#pinPostButton").data("id", postId);
+})
+
+$("#unpinModal").on("show.bs.modal", (event) => {
+    var button = $(event.relatedTarget);
+    var postId = getPostIdFromElement(button);
+    $("#unpinPostButton").data("id", postId);
+})
+
 $("#deletePostButton").click((event) => {
     var postId = $(event.target).data("id");
 
@@ -76,6 +88,44 @@ $("#deletePostButton").click((event) => {
         success: (data, status, xhr) => {
 
             if(xhr.status != 202) {
+                alert("could not delete post");
+                return;
+            }
+            
+            location.reload();
+        }
+    })
+})
+
+$("#pinPostButton").click((event) => {
+    var postId = $(event.target).data("id");
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "PUT",
+        data: { pinned: true },
+        success: (data, status, xhr) => {
+
+            if(xhr.status != 204) {
+                alert("could not delete post");
+                return;
+            }
+            
+            location.reload();
+        }
+    })
+})
+
+$("#unpinPostButton").click((event) => {
+    var postId = $(event.target).data("id");
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "PUT",
+        data: { pinned: false },
+        success: (data, status, xhr) => {
+
+            if(xhr.status != 204) {
                 alert("could not delete post");
                 return;
             }
@@ -174,6 +224,37 @@ $("#coverPhotoButton").click(() => {
             success: () => location.reload()
         })
     })
+})
+
+$("#userSearchTextbox").keydown((event) => {
+    clearTimeout(timer);
+    var textbox = $(event.target);
+    var value = textbox.val();
+
+    if (value == "" && event.keyCode == 8) {
+        // remove user from selection
+        selectedUsers.pop();
+        updateSelectedUsersHtml();
+        $(".resultsContainer").html("");
+
+        if(selectedUsers.length == 0) {
+            $("#createChatButton").prop("disabled", true);
+        }
+
+        return;
+    }
+
+    timer = setTimeout(() => {
+        value = textbox.val().trim();
+
+        if(value == "") {
+            $(".resultsContainer").html("");
+        }
+        else {
+            searchUsers(value);
+        }
+    }, 1000)
+
 })
 
 $(document).on("click", ".likeButton", (event) => {
@@ -320,13 +401,24 @@ function createPostHtml(postData, largeFont=false) {
         var replyToUsername = postData.replyTo.postedBy.userName;
         replyFlag = `<div class='replyFlag'>
                         Replying to <a href='/profile/${replyToUsername}'>@${replyToUsername}<a>
-                    </div>`
+                    </div>`;
 
     }
 
     var buttons = "";
+    var pinnedPostText = "";
     if (postData.postedBy._id == userLoggedIn._id) {
-        buttons = `<button data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="#deletePostModal"><i class='bx bxs-trash'></i></button>`;
+
+        var pinnedClass = "";
+        var dataTarget = "#confirmPinModal";
+        if (postData.pinned === true) {
+            pinnedClass = "active";
+            dataTarget = "#unpinModal";
+            pinnedPostText = "<i class='bx bxs-pin'></i> <span>Pinned post</span>";
+        }
+
+        buttons = `<button class='pinButton ${pinnedClass}' data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="${dataTarget}"><i class='bx bxs-pin'></i></button>
+                    <button data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="#deletePostModal"><i class='bx bxs-trash'></i></button>`;
     }
 
     return `<div class='post ${largeFontClass}' data-id='${postData._id}'>
@@ -338,6 +430,7 @@ function createPostHtml(postData, largeFont=false) {
                         <img src='${postedBy.profilePic}'>
                     </div>
                     <div class='postContentContainer'>
+                    <div class='pinnedPostText'>${pinnedPostText}</div>
                         <div class='header'>
                             <a href='/profile/${postedBy.userName}' class='displayName'>${displayName}</a>
                             <span class='username'>@${postedBy.userName}</span>
