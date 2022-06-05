@@ -8,5 +8,19 @@ block content
         script.
             var chatId = '!{chat._id}';
 
+        .chatPageContainer
+            .chatTitleBarContainer
+                +createChatImage(chat, userLoggedIn)
+                span#chatName(data-bs-toggle="modal", data-bs-target="#chatNameModal")
+            
+            .mainContentContainer
+                .chatContainer
+                    .chatMessages
+                    .footer
+                        textarea.inputTextbox(name="messageInput", placeholder="Type a message...")
+                        button.sendMessageButton
+                            i.bx.bxs.send
+        +createChatNameModal(chat)
+
 block scripts
     script(src="/js/chatPage.js")
