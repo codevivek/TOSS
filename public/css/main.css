@@ -190,6 +190,7 @@ button span{
 .mainContentContainer {
     flex: 1;
     display: flex;
+    overflow-y: hidden;
 }
 
 .postContentContainer {
@@ -529,9 +530,9 @@ button span{
 }
 
 .selectedUser {
-    font-weight: 400;
-    background-color: #e6e9ec;
-    color: var(--red);
+    font-weight: 300;
+    background-color: #CBE5FE;
+    color: #0084ff;
     padding: 5px;
     border-radius: 3px;
     margin: 5px 5px 0 0;
@@ -697,15 +698,24 @@ button span{
     display: flex;
     align-items: flex-end;
     flex-shrink: 0;
-    -webkit-flex: 0;
-    flex: 0;
 }
 
+.typingDots img,
 .chatMessages .message .messageBody {
     background-color: #f1f0f0;
     padding: 6px 12px;
     border-radius: 18px;
     font-size: 14px;
+}
+
+.typingDots img {
+    height: 35px;
+}
+
+.typingDots {
+    padding: var(--spacing);
+    padding-bottom: 0;
+    display: none;
 }
 
 .chatMessages .message .messageContainer {
@@ -796,3 +806,4 @@ button span{
     width: 50%;
     max-width: 75px;
 }
+
