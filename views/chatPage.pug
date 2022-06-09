@@ -14,12 +14,14 @@ block content
                 span#chatName(data-bs-toggle="modal", data-bs-target="#chatNameModal")
             
             .mainContentContainer
-                .chatContainer
-                    .chatMessages
+                .loadingSpinnerContainer
+                    img(src="/img/loadingSpinner.gif", alt="Loading spinner")
+                .chatContainer(style="visibility: hidden")
+                    ul.chatMessages
                     .footer
                         textarea.inputTextbox(name="messageInput", placeholder="Type a message...")
                         button.sendMessageButton
-                            i.bx.bxs.send
+                            i.bx.bxs-send
         +createChatNameModal(chat)
 
 block scripts
