@@ -2,6 +2,11 @@ var cropper;
 var timer;
 var selectedUsers=[];
 
+$(document).ready(() => {
+    refreshMessagesBadge();
+    refreshNotificationsBadge();
+})
+
 $("#postTextarea, #replyTextarea").keyup(event => {
     var textbox = $(event.target);
     var value = textbox.val().trim();
@@ -233,7 +238,7 @@ $("#userSearchTextbox").keydown((event) => {
     var textbox = $(event.target);
     var value = textbox.val();
 
-    if (value == "" && event.keyCode == 8) {
+    if (value == "" && (event.which == 8 || event.keyCode == 8)) {
         // remove user from selection
         selectedUsers.pop();
         updateSelectedUsersHtml();
@@ -258,6 +263,7 @@ $("#userSearchTextbox").keydown((event) => {
     }, 1000)
 
 })
+
 
 $("#createChatButton").click(() => {
     var data = JSON.stringify(selectedUsers);
@@ -285,6 +291,7 @@ $(document).on("click", ".likeButton", (event) => {
 
             if(postData.likes.includes(userLoggedIn._id)) {
                 button.addClass("active");
+                emitNotification(postData.postedBy)
             }
             else {
                 button.removeClass("active");
@@ -309,6 +316,7 @@ $(document).on("click", ".retossButton", (event) => {
 
             if(postData.retossUsers.includes(userLoggedIn._id)) {
                 button.addClass("active");
+                emitNotification(postData.postedBy)
             }
             else {
                 button.removeClass("active");
@@ -346,6 +354,7 @@ $(document).on("click", ".followButton", (e) => {
             if(data.following && data.following.includes(userId)) {
                 button.addClass("following");
                 button.text("Following");
+                emitNotification(userId);
             }
             else {
                 button.removeClass("following");
@@ -412,7 +421,7 @@ function createPostHtml(postData, largeFont=false) {
                     </span>`
     }
 
-    var replyFlag = '';
+    var replyFlag = "";
     if(postData.replyTo && postData.replyTo._id) {
         
         if(!postData.replyTo._id) {
@@ -461,6 +470,7 @@ function createPostHtml(postData, largeFont=false) {
                             <span class='date'>${timestamp}</span>
                             ${buttons}
                         </div>
+                        ${replyFlag}
                         <div class='postBody'>
                             <span>${postData.content}</span>
                         </div>
@@ -772,15 +782,15 @@ function getNotificationText(notification) {
 
     var userFrom = notification.userFrom;
 
-    if(!userFrom.firstName || !userFrom.lastName) {
+    if(!userFrom.fullname) {
         return alert("user from data not populated");
     }
 
-    var userFromName = `${userFrom.firstName} ${userFrom.lastName}`;
+    var userFromName = `${userFrom.fullname}`;
     
     var text;
 
-    if(notification.notificationType == "retweet") {
+    if(notification.notificationType == "retoss") {
         text = `${userFromName} retweeted one of your posts`;
     }
     else if(notification.notificationType == "postLike") {
@@ -799,7 +809,7 @@ function getNotificationText(notification) {
 function getNotificationUrl(notification) { 
     var url = "#";
 
-    if(notification.notificationType == "retweet" || 
+    if(notification.notificationType == "retoss" || 
         notification.notificationType == "postLike" || 
         notification.notificationType == "reply") {
             
@@ -831,7 +841,7 @@ function createChatHtml(chatData) {
 function getLatestMessage(latestMessage) {
     if(latestMessage != null) {
         var sender = latestMessage.sender;
-        return `${sender.firstName} ${sender.lastName}: ${latestMessage.content}`;
+        return `${sender.fullname}: ${latestMessage.content}`;
     }
 
     return "New chat";

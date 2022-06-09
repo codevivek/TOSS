@@ -23,6 +23,7 @@ function loadReplies() {
         outputPosts(results, $(".postsContainer"));
     })
 }
+
 function outputPinnedPost(results, container) {
     if(results.length == 0) {
         container.hide();
