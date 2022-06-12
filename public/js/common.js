@@ -44,6 +44,7 @@ $("#submitPostButton, #submitReplyButton").click((event) => {
     $.post("/api/posts", data, postData => {
 
         if(postData.replyTo) {
+            emitNotification(postData.replyTo.postedBy)
             location.reload();
         }
         else {
@@ -328,12 +329,12 @@ $(document).on("click", ".retossButton", (event) => {
 })
 
 $(document).on("click", ".post", (event) => {
-    var element = $(event.target);
-    var postId = getPostIdFromElement(element);
-
-    if(postId !== undefined && !element.is("button")) {
-        window.location.href = '/posts/' + postId;
-    }
+	var element = $(event.target);
+	var postId = getPostIdFromElement(element);
+ 
+	if(postId !== undefined && !element.is("button") && !element.hasClass("postLink")) {
+		window.location.href = '/posts/' + postId;
+	}
 });
 
 $(document).on("click", ".followButton", (e) => {
@@ -391,6 +392,25 @@ function getPostIdFromElement(element) {
     if(postId === undefined) return alert("Post id undefined");
 
     return postId;
+}
+
+function replaceURLs(message) {
+	if (!message) return;
+ 
+	var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+	return message.replace(urlRegex, function (url) {
+		var hyperlink = url;
+		if (!hyperlink.match("^https?://")) {
+			hyperlink = "http://" + hyperlink;
+		}
+		return (
+			'<a class=\'postLink\' href="' +
+			hyperlink +
+			'" target="_blank" rel="noopener noreferrer">' +
+			url +
+			" <i class='i.bx.bx-link-external urlLink'></i> </a>"
+		);
+	});
 }
 
 function createPostHtml(postData, largeFont=false) {
@@ -472,7 +492,7 @@ function createPostHtml(postData, largeFont=false) {
                         </div>
                         ${replyFlag}
                         <div class='postBody'>
-                            <span>${postData.content}</span>
+                            <span>${replaceURLs(postData.content)}</span>
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
@@ -791,7 +811,7 @@ function getNotificationText(notification) {
     var text;
 
     if(notification.notificationType == "retoss") {
-        text = `${userFromName} retweeted one of your posts`;
+        text = `${userFromName} retossed one of your posts`;
     }
     else if(notification.notificationType == "postLike") {
         text = `${userFromName} liked one of your posts`;
