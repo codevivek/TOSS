@@ -16,30 +16,40 @@ html(lang="en")
         script.
             var userLoggedIn = !{userLoggedInJs};
         .wrapper
+            img.logo(src="/img/logo.png")
             .row
-                .d-none.d-md-block.col-md-2.col-lg-3
-                    
+                
+                nav.col-2 
+                    a(href="/")
+                        i.bx.bxs-home
+                        h6.navText Home
+                    a(href="/search")
+                        i.bx.bx-search
+                        h6.navText Search
+                    a(href="/notifications")
+                        i.bx.bxs-bell
+                        h6.navText Notifications
+                    a(href="/messages")
+                        i.bx.bxs-chat
+                        h6.navText Messages
+                    a(href="/profile")
+                       i.bx.bxs-user
+                       h6.navText Account
+                    a(href="/logout")
+                       i.bx.bxs-exit 
+                       h6.navText Logout 
+
                 .mainSectionContainer.col-10.col-md-8.col-lg-6
                     .titleContainer
                         h1 #{pageTitle}
                         block headerButton
+                    block content 
+                .news.d-none.d-md-block.col-md-2.col-lg-3
+                   iframe(width='400' height='1000' padding-left='10px' src='https://rss.app/embed/v1/list/Vp1D7IpoFs5vSGKW' frameborder='0')
+
+                
                         
-                    block content
-                nav.col-1
-                    a.blue(href="/")
-                       img#logo(src="/img/logo.png")
-                    a(href="/")
-                         i.bx.bxs-home
-                    a(href="/search")
-                        i.bx.bx-search
-                    a(href="/notifications")
-                        i.bx.bxs-bell
-                    a(href="/messages")
-                        i.bx.bxs-chat
-                    a(href="/profile")
-                       i.bx.bxs-user
-                    a(href="/logout")
-                       i.bx.bxs-exit
+                    
                     
 
 
@@ -48,6 +58,7 @@ html(lang="en")
     script(src='https://code.jquery.com/jquery-3.6.0.min.js', integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=', crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.js')
     script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js") 
+    
 
     block scripts
     

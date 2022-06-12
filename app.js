@@ -34,6 +34,11 @@ const searchRoute = require('./routes/searchRoutes');
 const messagesRoute = require('./routes/messagesRoutes');
 const notificationsRoute = require('./routes/notificationRoutes');
 
+const requestReset = require("./routes/requestReset");
+
+ 
+const passwordReset = require("./routes/passwordReset")
+
 // Api routes
 const postsApiRoute = require('./routes/api/posts');
 const usersApiRoute = require('./routes/api/users');
@@ -50,6 +55,8 @@ app.use("/uploads", uploadRoute);
 app.use("/search", middleware.requireLogin, searchRoute);
 app.use("/messages", middleware.requireLogin, messagesRoute);
 app.use("/notifications", middleware.requireLogin, notificationsRoute);
+app.use("/passwordReset", passwordReset);
+app.use("/requestReset", requestReset);
 
 app.use("/api/posts", postsApiRoute);
 app.use("/api/users", usersApiRoute);
