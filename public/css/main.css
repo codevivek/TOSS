@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 :root {
-    --red: #1d2855;
+    --red: #25346c;
     --buttonHoverBg: #eeeeef;
     --lightGrey: rgb(179, 178, 178);
     --spacing: 15px;
@@ -46,23 +46,24 @@ nav {
     flex-direction: column;
     align-items: flex-end;
     color:var(--red);
+    height: 100%;
     padding-top: 100px;
 }
 
-nav a {
+.navPage {
     padding: 10px;
     font-size: 25px;
     width: 100%;
     height: 55px;
     display: flex;
     float: left;
+    position: relative;
 }
-
-nav a.red {
+.navPage.red {
     color: var(--red);
 }
 
-nav a:hover {
+.navPage:hover {
     background-color: var(--buttonHoverBg);
     color: black;
     border-radius: 10px;
@@ -74,7 +75,7 @@ nav a:hover {
 }
 
 .wrapper {
-    display: flex;
+    
     flex-direction: column;
     height: 100%;
 }
@@ -97,10 +98,10 @@ button span{
 }
 
 .mainSectionContainer {
-    margin-top:10px;
-    border: 1px solid var(--lightGrey);
+    border-left: 1px solid var(--lightGrey);
+    border-right: 1px solid var(--lightGrey);
+    border-top: 1px solid var(--lightGrey);
     border-radius: 10px;
-    height: auto;
     padding: 0;
     display: flex;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
@@ -163,7 +164,6 @@ button span{
 .textareaContainer textarea{
     width: 100%;
     border: none;
-    height: 80px;
     resize: none;
     font-size: 15px;
 }
@@ -174,7 +174,6 @@ button span{
     border: 1px solid var(--red);
     border-radius: 10px;
     width: 80px;
-    height: 40px;
     float: right;
     margin-right: 20px;
 }
@@ -374,6 +373,7 @@ button span{
     display: flex;
     border-bottom: 1px solid var(--lightGrey);
     flex-shrink: 0;
+    padding-top: 10px;
 }
 
 .tab {
@@ -492,7 +492,7 @@ button span{
     width: 100%;
     padding: 5px 15px 5px 40px;
     border-radius: 50px;
-    background-color: var(--lightGrey);
+    background-color: rgb(206, 206, 206);
     border: none;
     color: black;
 }
@@ -817,7 +817,7 @@ button span{
 }
 
 .resultListItem.active {
-    background-color: var(--blueBackground);
+    background-color: rgb(223, 223, 223);
 }
 
 .resultListItem.notification * {
