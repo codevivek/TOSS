@@ -512,19 +512,19 @@ function timeDifference(current, previous) {
     if (elapsed < msPerMinute) {
         if(elapsed/1000 < 30) return "Just now";
         
-        return Math.round(elapsed/1000) + ' seconds ago';   
+        return Math.round(elapsed/1000) + 's';   
     }
 
     else if (elapsed < msPerHour) {
-         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+         return Math.round(elapsed/msPerMinute) + 'm';   
     }
 
     else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' hours ago';   
+         return Math.round(elapsed/msPerHour ) + 'h';   
     }
 
     else if (elapsed < msPerMonth) {
-        return Math.round(elapsed/msPerDay) + ' days ago';   
+        return Math.round(elapsed/msPerDay) + 'd';   
     }
 
     else if (elapsed < msPerYear) {
