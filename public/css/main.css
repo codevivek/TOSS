@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 :root {
-    --red: #1a254f;
+    --red: #1d2855;
     --buttonHoverBg: #eeeeef;
-    --lightGrey: rgb(211, 214, 215);
+    --lightGrey: rgb(179, 178, 178);
     --spacing: 15px;
     --greyText: rgb(101, 119, 134);
     --greyButtonText: rgba(0,0,0,0.34);
@@ -15,8 +15,6 @@ html, body {
     background-color: #fff;
     font-weight: 300;
 }
-
-
 
 *{
 outline: none !important;
@@ -32,8 +30,9 @@ a:hover {
 }
 
 a:active{
-    color:var(--red)
+    color:var(--red);
 }
+
 
 h1 {
     font-size: 16px;
@@ -46,19 +45,17 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    height: 100%;
     color:var(--red);
-
+    padding-top: 100px;
 }
 
 nav a {
     padding: 10px;
     font-size: 25px;
-    width: 55px;
+    width: 100%;
     height: 55px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    float: left;
 }
 
 nav a.red {
@@ -68,7 +65,12 @@ nav a.red {
 nav a:hover {
     background-color: var(--buttonHoverBg);
     color: black;
-    border-radius: 50%;
+    border-radius: 10px;
+}
+
+.navText{
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
 .wrapper {
@@ -95,12 +97,14 @@ button span{
 }
 
 .mainSectionContainer {
-    padding:  0;
-    border-left: 1px solid var(--lightGrey);
-    border-right: 1px solid var(--lightGrey);
+    margin-top:10px;
+    border: 1px solid var(--lightGrey);
+    border-radius: 10px;
+    height: auto;
+    padding: 0;
     display: flex;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     flex-direction: column;
-    
 }
 
 .titleContainer {
@@ -116,15 +120,17 @@ button span{
     flex: 1;
 }
 
-#logo{
-    height:50px;
+.logo{
+    height:70px;
     width:80px;
+    float: left;
+    margin-top: 10px;
 }
 
 .postFormContainer{
     display: flex;
     padding:var(--spacing);
-    border-bottom: 4px solid var(--lightGrey);
+    border-bottom: 2px solid var(--lightGrey);
     flex-shrink: 0;
 }
 
@@ -157,6 +163,7 @@ button span{
 .textareaContainer textarea{
     width: 100%;
     border: none;
+    height: 80px;
     resize: none;
     font-size: 15px;
 }
@@ -166,7 +173,8 @@ button span{
     color:white;
     border: 1px solid var(--red);
     border-radius: 10px;
-    width: 60px;
+    width: 80px;
+    height: 40px;
     float: right;
     margin-right: 20px;
 }
@@ -240,11 +248,11 @@ button span{
 }
 
 .postButtonContainer.red button.active {
-    color: var(--red);
+    color: rgb(170, 41, 41);
 }
 
 .postButtonContainer.red button:hover {
-    color: var(--red);
+    color: rgb(170, 41, 41);
 }
 
 .postButtonContainer.green button.active {
@@ -267,7 +275,8 @@ button span{
 }
 
 .replyFlag a {
-    color: var(--blue);
+    color: var(--red);
+    font-weight: bold;
 }
 
 .post.largeFont .postBody,
@@ -454,7 +463,7 @@ button span{
 }
 
 .pinButton.active {
-    color: var(--red);
+    color: #2f8be1;
 }
 
 .pinnedPostText {
@@ -851,3 +860,4 @@ button span{
 #notificationList .active {
     background-color: white;
 }
+
