@@ -18,24 +18,25 @@ html(lang="en")
         .wrapper
             img.logo(src="/img/logo.png")
             .row
-                
-                nav.col-2 
-                    a(href="/")
+                nav.col-2
+                    a.navPage(href="/")
                         i.bx.bxs-home
                         h6.navText Home
-                    a(href="/search")
+                    a.navPage(href="/search")
                         i.bx.bx-search
                         h6.navText Search
-                    a(href="/notifications")
+                    a.navPage(href="/notifications")
                         i.bx.bxs-bell
+                        span#notificationBadge
                         h6.navText Notifications
-                    a(href="/messages")
+                    a.navPage(href="/messages")
                         i.bx.bxs-chat
+                        span#messagesBadge
                         h6.navText Messages
-                    a(href="/profile")
+                    a.navPage(href="/profile")
                        i.bx.bxs-user
                        h6.navText Account
-                    a(href="/logout")
+                    a.navPage(href="/logout")
                        i.bx.bxs-exit 
                        h6.navText Logout 
 
@@ -46,12 +47,7 @@ html(lang="en")
                     block content 
                 .news.d-none.d-md-block.col-md-2.col-lg-3
                    iframe(width='400' height='1000' padding-left='10px' src='https://rss.app/embed/v1/list/Vp1D7IpoFs5vSGKW' frameborder='0')
-
-                
-                        
-                    
-                    
-
+        #notificationList
 
     script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js', integrity='sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB', crossorigin='anonymous')
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js', integrity='sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13', crossorigin='anonymous')
