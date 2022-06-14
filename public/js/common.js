@@ -143,6 +143,51 @@ $("#unpinPostButton").click((event) => {
     })
 })
 
+$("#postPhoto").change(function(){    
+    if(this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            var image = document.getElementById("postPreview");
+            image.src = e.target.result;
+
+            if(cropper !== undefined) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 10,
+                background: false
+            });
+
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+})
+
+$("#imagePostButton").click(() => {
+    var canvas = cropper.getCroppedCanvas();
+
+    if(canvas == null) {
+        alert("Could not upload image. Make sure it is an image file.");
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        var formData = new FormData();
+        formData.append("croppedImage", blob);
+
+        $.ajax({
+            url: "/api/posts/postPicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
+    })
+})
+
+
 $("#filePhoto").change(function(){    
     if(this.files && this.files[0]) {
         var reader = new FileReader();
@@ -264,6 +309,7 @@ $("#userSearchTextbox").keydown((event) => {
     }, 1000)
 
 })
+
 
 
 $("#createChatButton").click(() => {
@@ -397,7 +443,7 @@ function getPostIdFromElement(element) {
 function replaceURLs(message) {
 	if (!message) return;
  
-	var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+	var urlRegex = /(((https?:\/\/)|(www\.)|(#))[^\s]+)/g;
 	return message.replace(urlRegex, function (url) {
 		var hyperlink = url;
 		if (!hyperlink.match("^https?://")) {

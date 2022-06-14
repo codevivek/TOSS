@@ -4,25 +4,26 @@ mixin createPostForm(userLoggedIn)
             img(src=userLoggedIn.profilePic, alt="Profile picture")
         .textareaContainer
             textarea#postTextarea(placeholder="What's happening?")
+            button.imagePostButton(data-bs-toggle="modal", data-bs-target="#imagePostModal")
+                i.bx.bxs-photo-album
             .buttonsContainer
-                button#submitPostButton(disabled="") Post
+                button#submitPostButton(disabled="") Post 
 
 mixin createImagePostModal()
-    #imageUploadModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='imageUploadModalLabel', aria-hidden='true')
+    #imagePostModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='imagePostModalLabel', aria-hidden='true')
         .modal-dialog(role='document')
             .modal-content
                 .modal-header
-                    h5#dimageUploadModalLabel.modal-title Upload a new profile picture
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    h5#imagePostModalLabel.modal-title Post a photo
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    input#postPhoto(type="file", name="postPhoto")
-
-                    .imagePreviewContainer
-                        img#imagePreview
+                    input#postPhoto(type="file", name="filePhoto")
+                    .postPreviewContainer
+                        img#postPreview
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
-                    button#postUploadButton.btn.btn-primary(type='button') Save
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+                    button#imagePostButton.btn.btn-primary(type='button') Save
 
 mixin createReplyModal(userLoggedIn)
     #replyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='replyModalLabel', aria-hidden='true')
@@ -30,7 +31,7 @@ mixin createReplyModal(userLoggedIn)
             .modal-content
                 .modal-header
                     h5#replyModalLabel.modal-title Reply
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     #originalPostContainer
@@ -40,7 +41,7 @@ mixin createReplyModal(userLoggedIn)
                         .textareaContainer
                             textarea#replyTextarea(placeholder="What's happening?")
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
                     button#submitReplyButton.btn.btn-primary(type='button', disabled="") Reply
 
 mixin createDeletePostModal()
@@ -49,12 +50,12 @@ mixin createDeletePostModal()
             .modal-content
                 .modal-header
                     h5#deletePostModalLabel.modal-title Delete the post?
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     p Delete this post?
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
                     button#deletePostButton.btn.btn-primary(type='button') Delete
 
 mixin createPostModals(userLoggedIn)
@@ -79,7 +80,7 @@ mixin createImageUploadModal()
             .modal-content
                 .modal-header
                     h5#dimageUploadModalLabel.modal-title Upload a new profile picture
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     input#filePhoto(type="file", name="filePhoto")
@@ -87,7 +88,7 @@ mixin createImageUploadModal()
                     .imagePreviewContainer
                         img#imagePreview
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
                     button#imageUploadButton.btn.btn-primary(type='button') Save
 
 mixin createCoverPhotoUploadModal()
@@ -96,7 +97,7 @@ mixin createCoverPhotoUploadModal()
             .modal-content
                 .modal-header
                     h5#coverPhotoModalLabel.modal-title Upload a new cover photo
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     input#coverPhoto(type="file", name="filePhoto")
@@ -104,7 +105,7 @@ mixin createCoverPhotoUploadModal()
                     .imagePreviewContainer
                         img#coverPreview
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
                     button#coverPhotoButton.btn.btn-primary(type='button') Save
 
 mixin createPinnedPostModal()
@@ -113,12 +114,12 @@ mixin createPinnedPostModal()
             .modal-content
                 .modal-header
                     h5#confirmPinModalLabel.modal-title Pin this post?
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     p This post will appear at the top of your profile. You can only pin one post.
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
                     button#pinPostButton.btn.btn-primary(type='button') Pin
 
 mixin createUnpinPostModal()
@@ -127,12 +128,12 @@ mixin createUnpinPostModal()
             .modal-content
                 .modal-header
                     h5#unpinModalLabel.modal-title Unpin the post?
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
                     p This post will be unpinned.
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
                     button#unpinPostButton.btn.btn-primary(type='button') Unpin
 
 mixin createChatImage(chatData, userLoggedIn)
@@ -169,5 +170,6 @@ mixin createChatNameModal(chat)
                 .modal-body
                     input#chatNameTextbox(type="text", placeholder="Enter a name for this chat", value=chat.chatName)
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
                     button#chatNameButton.btn.btn-primary(type='button') Save
+

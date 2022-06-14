@@ -16,7 +16,7 @@ router.get("/", async(req, res, next) => {
     }
     const id = req.query.id
  
-    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id firstName")
+    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id fullname")
     .catch(() => {
         payload.statusMessage = "Something went wrong. Please try again."
         return res.status(400).render("passwordReset", payload)
@@ -39,7 +39,7 @@ router.post("/", async(req, res, next) => {
  
     const id = req.query.id
  
-    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id firstName")
+    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id fullname")
     .catch(() => {
         payload.statusMessage = "Something went wrong. Please try again."
         return res.status(400).render("passwordReset", payload)

@@ -63,22 +63,20 @@ router.post("/", async (req, res, next) => {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: 'youremail@gmail.com',
-              pass: 'yourpassword'
+              user: 'jennycollege2@gmail.com',
+              pass: 'Collegec2'
             }
        });
       
         var mailOptions = {
-            from: 'Twitter Clone',
+            from: 'Toss',
             to: findEmail,
             subject: 'Password change',
             html: `You have requested a password change. 
             <p>Please follow this link to change your password:</p>
             <a href="http://localhost:4000/passwordReset?id=${uniqueId}">Click here</a>
             <br><br>If you don't see the link, please copy and paste this line in your browser's address bar:
-            <p>http://localhost:4000/passwordReset?id=${uniqueId}</p>
-            `
-            
+            <p>http://localhost:4000/passwordReset?id=${uniqueId}</p>` 
         }
       
         transporter.sendMail(mailOptions, async function(error, info){

@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const upload = multer({ dest: "uploads/" });
 const bodyParser = require("body-parser")
 const User = require('../../schemas/UserSchema');
 const Post = require('../../schemas/PostSchema');
@@ -202,6 +206,28 @@ router.put("/:id", async (req, res, next) => {
         res.sendStatus(400);
     })
 })
+
+router.post("/postPicture", upload.single("croppedImage"), async (req, res, next) => {
+    if(!req.file) {
+        console.log("No file uploaded with ajax request.");
+        return res.sendStatus(400);
+    }
+
+    var filePath = `/uploads/posts/${req.file.filename}.png`;
+    var tempPath = req.file.path;
+    var targetPath = path.join(__dirname, `../../${filePath}`);
+
+    fs.rename(tempPath, targetPath, async error => {
+        if(error != null) {
+            console.log(error);
+            return res.sendStatus(400);
+        }
+
+        req.session.user = await User.findByIdAndUpdate(req.session.user._id, { content: filePath }, { new: true });
+        res.sendStatus(204);
+    })
+
+});
 
 async function getPosts(filter) {
     var results = await Post.find(filter)

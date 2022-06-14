@@ -168,14 +168,14 @@ function createMessageHtml(message, nextMessage, lastSenderId) {
     }
 
     return `<li class='message ${liClassName}'>
-                ${imageContainer}
-                <div class='messageContainer'>
-                    ${nameElement}
-                    <span class='messageBody'>
-                        ${message.content}
-                    </span>
-                </div>
-            </li>`;
+            ${imageContainer}
+            <div class='messageContainer'>
+                ${nameElement}
+                <span class='messageBody'>
+                    ${replaceURLs(message.content)}
+                </span>
+            </div>
+        </li>`;
 }
 
 function scrollToBottom(animated) {
