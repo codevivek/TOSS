@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const User = require("../schemas/UserSchema")
 const nodemailer = require('nodemailer');
 const uuid = require("uuid-random")
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
 app.use(bodyParser.urlencoded({extended: false}))
  
 
@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
     res.status(200).render("requestReset")
 })
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
+
 router.post("/", async (req, res, next) => {
  
     if(!req.body)
