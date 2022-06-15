@@ -223,7 +223,7 @@ router.post("/postPicture", upload.single("croppedImage"), async (req, res, next
             return res.sendStatus(400);
         }
 
-        req.session.user = await User.findByIdAndUpdate(req.session.user._id, { content: filePath }, { new: true });
+        req.session.user = await User.findByIdAndUpdate(req.session.user._id, { postData: filePath }, { new: true });
         res.sendStatus(204);
     })
 

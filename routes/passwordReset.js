@@ -35,7 +35,7 @@ router.get("/", async(req, res, next) => {
 router.post("/", async(req, res, next) => {
     const payload = req.body
     const password = req.body.password
-    const confirmPass = req.body.confirmPassword
+    const confirmPass = req.body.passwordConf
  
     const id = req.query.id
  
@@ -50,7 +50,7 @@ router.post("/", async(req, res, next) => {
         return res.status(400).render("passwordReset", payload)
     }
     else {
-         payload.name = getUser.firstName
+         payload.name = getUser.fullname
         if(password !== confirmPass) {
             payload.statusMessage = "Passwords are not the same"
             return res.status(400).render("passwordReset", payload)

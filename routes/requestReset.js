@@ -47,11 +47,6 @@ router.post("/", async (req, res, next) => {
             return res.status(400).render("requestReset", payload)
         })
  
-        if(checkForPreviousReset.resetPassword !== "") {
-            payload.statusMessage = "You have already requested a password change. Please check your inbox"
-            return res.status(400).render("requestReset", payload)
-        }
- 
         const uniqueId = uuid()
  
         const updateUser = await User.findOneAndUpdate({email: findEmail}, {resetPassword: uniqueId})
@@ -61,12 +56,13 @@ router.post("/", async (req, res, next) => {
         })
  
         var transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.mailtrap.io",
+            port: 2525,
             auth: {
-              user: 'jennycollege2@gmail.com',
-              pass: 'Collegec2'
+              user: "bfd797a853edb8",
+              pass: "7848829faffcd2"
             }
-       });
+          });
       
         var mailOptions = {
             from: 'Toss',

@@ -3,6 +3,8 @@ const app=express();
 const router=express.Router();
 const bodyParser=require('body-parser')
 const bcrypt=require('bcrypt');
+const nodemailer = require('nodemailer');
+const uuid = require("uuid-random")
 const User=require('../schemas/UserSchema')
 
 app.set("view engine", "pug");
@@ -61,6 +63,81 @@ else {
     payload.errorMessage = "Make sure each field has a valid value.";
     res.status(200).render("register", payload);
 }
+router.post("/", async (req, res, next) => {
+ 
+    if(!req.body)
+        return
+    
+    const payload = req.body
+    const getUser = await User.findOne({email: email})
+    .catch(() => {
+        payload.statusMessage = "Something went wrong. Please try again."
+        return res.status(400).render("register", payload)
+    })
+ 
+    if(getUser == null) {
+        payload.statusMessage = "Could not find user"
+        return res.status(400).render("register", payload)
+    }
+ 
+    else {
+ 
+        const checkForField = await User.updateOne({email: email}, [{$set:{"confirmEmail": { $cond: [ { $not: ["$confirmEmail"] }, "", "$confirmEmail" ]}}}])
+        .catch(() => {
+            payload.statusMessage = "Something went wrong. Please try again."
+            return res.status(400).render("register", payload)
+        })
+ 
+        const checkForPreviousConfirm = await User.findOne({email: email}).select("confirmEmail")
+        .catch(() => {
+            payload.statusMessage = "Something went wrong. Please try again."
+            return res.status(400).render("register", payload)
+        })
+ 
+        const uniqueId = uuid()
+ 
+        const updateUser = await User.findOneAndUpdate({email: email}, {confirmEmail: uniqueId})
+        .catch(() => {
+            payload.statusMessage = "Something went wrong. Please try again."
+            return res.status(400).render("register", payload)
+        })
+ 
+        var transporter = nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+              user: "bfd797a853edb8",
+              pass: "7848829faffcd2"
+            }
+          });
+      
+        var mailOptions = {
+            from: 'Toss',
+            to: email,
+            subject: 'Registration Confirmation',
+            html: `Thank you for registering with us. 
+            <p>Please follow this link to confirm your registration:</p>
+            <a href="http://localhost:4000/login?id=${uniqueId}">Click here</a>` 
+        }
+      
+        transporter.sendMail(mailOptions, async function(error, info){
+            if (error) {
+                const updateUser = await User.findOneAndUpdate({email: email}, {confirmEmail: ""})
+                .catch(() => {
+                    payload.statusMessage = "Something went wrong. Please try again."
+                    return res.status(400).render("register", payload)
+                })
+                payload.statusMessage = "Something went wrong. Please try again"
+                return res.status(400).render("register", payload)
+            } else {
+            console.log('Email sent: ' + info.response)
+            }
+        })
+ 
+        payload.statusMessage = "We have sent you an email with a link to reset your password. If you don't see it in your inbox, please check your spam folder"
+        return res.status(200).render("register", payload)
+    }
+})
 });
 
 module.exports=router;

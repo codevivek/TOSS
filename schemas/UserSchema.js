@@ -12,8 +12,9 @@ const UserSchema=new Schema({
     retoss: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    resetPassword: {type: String}
+    resetPassword: {type: String},
+    confirmEmail:{type:String,trim:true}
 },{timestamps:true});
 
 var User=mongoose.model('User',UserSchema);
-module.exports=User;
+module.exports=User; 

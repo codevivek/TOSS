@@ -29,7 +29,7 @@ $("#submitPostButton, #submitReplyButton").click((event) => {
     var button = $(event.target);
 
     var isModal = button.parents(".modal").length == 1;
-    var textbox = isModal ? $("#replyTextarea") : $("#postTextarea","#imagePostModel");
+    var textbox = isModal ? $("#replyTextarea") : $("#postTextarea");
 
     var data = {
         content: textbox.val()
@@ -48,7 +48,7 @@ $("#submitPostButton, #submitReplyButton").click((event) => {
             location.reload();
         }
         else {
-            var html = createPostHtml(postData);
+            var html =  (postData);
             $(".postsContainer").prepend(html);
             textbox.val("");
             button.prop("disabled", true);
