@@ -134,7 +134,7 @@ function addChatMessageHtml(message) {
 function createMessageHtml(message, nextMessage, lastSenderId) {
 
     var sender = message.sender;
-    var senderName = sender.fullname;
+    var senderName = sender.firstName + " " + sender.lastName;
 
     var currentSenderId = sender._id;
     var nextSenderId = nextMessage != null ? nextMessage.sender._id : "";

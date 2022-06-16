@@ -156,7 +156,7 @@ mixin createChatImage(chatData, userLoggedIn)
             else if i >= maxImagesToShow    
                 - break
             
-            img(src=user.profilePic, alt="User's profile picture", title=user.fullname)
+            img(src=user.profilePic, alt="User's profile picture", title=user.firstName)
             - i++
 
 mixin createChatNameModal(chat)

@@ -473,7 +473,7 @@ function createPostHtml(postData, largeFont=false) {
         return console.log("User object not populated");
     }
 
-    var displayName = postedBy.fullname;
+    var displayName = postedBy.firstName + " " + postedBy.lastName;
     var timestamp = timeDifference(new Date(), new Date(postData.createdAt));
     var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
     var retossButtonActiveClass = postData.retossUsers.includes(userLoggedIn._id) ? "active" : "";
@@ -651,7 +651,7 @@ function outputUsers(results, container) {
 
 function createUserHtml(userData, showFollowButton) {
 
-    var name = userData.fullname;
+    var name = userData.firstName + " " + userData.lastName;
     var isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
     var text = isFollowing ? "Following" : "Follow"
     var buttonClass = isFollowing ? "followButton following" : "followButton"
@@ -716,7 +716,7 @@ function updateSelectedUsersHtml() {
     var elements = [];
 
     selectedUsers.forEach(user => {
-        var name = user.fullname;
+        var name = user.firstName + " " + user.lastName;
         var userElement = $(`<span class='selectedUser'>${name}</span>`);
         elements.push(userElement);
     })
@@ -730,7 +730,7 @@ function getChatName(chatData) {
 
     if(!chatName) {
         var otherChatUsers = getOtherChatUsers(chatData.users);
-        var namesArray = otherChatUsers.map(user => user.fullname);
+        var namesArray = otherChatUsers.map(user => user.firstName + " " + user.lastName);
         chatName = namesArray.join(", ")
     }
 
@@ -848,11 +848,12 @@ function getNotificationText(notification) {
 
     var userFrom = notification.userFrom;
 
-    if(!userFrom.fullname) {
+    if(!userFrom.firstName || !userFrom.lastName) {
         return alert("user from data not populated");
     }
 
-    var userFromName = `${userFrom.fullname}`;
+    var userFromName = `${userFrom.firstName} ${userFrom.lastName}`;
+    
     
     var text;
 
@@ -907,7 +908,7 @@ function createChatHtml(chatData) {
 function getLatestMessage(latestMessage) {
     if(latestMessage != null) {
         var sender = latestMessage.sender;
-        return `${sender.fullname}: ${latestMessage.content}`;
+        return `${sender.firstName} ${sender.lastName}: ${latestMessage.content}`;
     }
 
     return "New chat";
