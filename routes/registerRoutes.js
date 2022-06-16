@@ -3,6 +3,8 @@ const app=express();
 const router=express.Router();
 const bodyParser=require('body-parser')
 const bcrypt=require('bcrypt');
+const nodemailer = require('nodemailer');
+const uuid = require("uuid-random")
 const User=require('../schemas/UserSchema')
 
 app.set("view engine", "pug");
@@ -12,15 +14,15 @@ app.use(bodyParser.urlencoded({ extended:false}));
 router.get("/",(req,res,next)=>{
     res.status(200).render("register"); 
 })
-
 router.post("/",async (req,res,next)=>{
-   var fullname=req.body.fullname.trim();
+var firstName = req.body.firstName.trim();
+var lastName = req.body.lastName.trim();
    var userName=req.body.userName.trim();
    var email=req.body.email.trim();
    var password=req.body.password;
 
    var payload=req.body;
-   if(fullname&& userName && email && password) {
+   if(firstName && lastName && userName && email && password) {
     var user = await User.findOne({
         $or: [
             { userName: userName },
@@ -37,14 +39,12 @@ router.post("/",async (req,res,next)=>{
         // No user found
 
         var data = req.body;
-
-            data.password = await bcrypt.hash(password, 10);
-
-            User.create(data)
-            .then((user) => {
-                req.session.user=user;
-                return res.redirect("/");
-            })
+        data.password = await bcrypt.hash(password, 10);
+        User.create(data)
+        .then((user) => {
+            req.session.user=user;
+            return res.redirect("/");
+        })
     }
     else {
         // User found
@@ -55,12 +55,49 @@ router.post("/",async (req,res,next)=>{
             payload.errorMessage = "Username already in use.";
         }
         res.status(200).render("register", payload);
+
+        var transporter = nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+              user: "bfd797a853edb8",
+              pass: "7848829faffcd2"
+            }
+          });
+      
+        var mailOptions = {
+            from: 'Toss',
+            to: email,
+            subject: 'Password change',
+            html: `You have requested a password change. 
+            <p>Please follow this link to change your password:</p>
+            <a href="http://localhost:4000/login?id=${uniqueId}">Click here</a>` 
+        }
+      
+        transporter.sendMail(mailOptions, async function(error, info){
+            if (error) {
+                const updateUser = await User.findOneAndUpdate({email: email})
+                .catch(() => {
+                    payload.statusMessage = "Something went wrong. Please try again."
+                    return res.status(400).render("register", payload)
+                })
+                payload.statusMessage = "Something went wrong. Please try again"
+                return res.status(400).render("register", payload)
+            } else {
+            console.log('Email sent: ' + info.response)
+            }
+        })
+ 
+        payload.status = "We have sent you an email with a link to confirm your registration. If you don't see it in your inbox, please check your spam folder"
+        return res.status(200).render("register", payload)
     }
+
+    
 }
 else {
     payload.errorMessage = "Make sure each field has a valid value.";
     res.status(200).render("register", payload);
-}
+}   
 });
 
 module.exports=router;

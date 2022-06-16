@@ -5,15 +5,15 @@ const bodyParser = require('body-parser')
 const User = require("../schemas/UserSchema")
 const nodemailer = require('nodemailer');
 const uuid = require("uuid-random")
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
 app.use(bodyParser.urlencoded({extended: false}))
  
 
 router.get("/", (req, res, next) => {
     res.status(200).render("requestReset")
-})
+}) 
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
+
 router.post("/", async (req, res, next) => {
  
     if(!req.body)
@@ -47,11 +47,6 @@ router.post("/", async (req, res, next) => {
             return res.status(400).render("requestReset", payload)
         })
  
-        if(checkForPreviousReset.resetPassword !== "") {
-            payload.statusMessage = "You have already requested a password change. Please check your inbox"
-            return res.status(400).render("requestReset", payload)
-        }
- 
         const uniqueId = uuid()
  
         const updateUser = await User.findOneAndUpdate({email: findEmail}, {resetPassword: uniqueId})
@@ -61,24 +56,23 @@ router.post("/", async (req, res, next) => {
         })
  
         var transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.mailtrap.io",
+            port: 2525,
             auth: {
-              user: 'youremail@gmail.com',
-              pass: 'yourpassword'
+              user: "bfd797a853edb8",
+              pass: "7848829faffcd2"
             }
-       });
+          });
       
         var mailOptions = {
-            from: 'Twitter Clone',
+            from: 'Toss',
             to: findEmail,
             subject: 'Password change',
             html: `You have requested a password change. 
             <p>Please follow this link to change your password:</p>
             <a href="http://localhost:4000/passwordReset?id=${uniqueId}">Click here</a>
             <br><br>If you don't see the link, please copy and paste this line in your browser's address bar:
-            <p>http://localhost:4000/passwordReset?id=${uniqueId}</p>
-            `
-            
+            <p>http://localhost:4000/passwordReset?id=${uniqueId}</p>` 
         }
       
         transporter.sendMail(mailOptions, async function(error, info){

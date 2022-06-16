@@ -16,7 +16,7 @@ router.get("/", async(req, res, next) => {
     }
     const id = req.query.id
  
-    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id firstName")
+    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id fullname")
     .catch(() => {
         payload.statusMessage = "Something went wrong. Please try again."
         return res.status(400).render("passwordReset", payload)
@@ -35,11 +35,11 @@ router.get("/", async(req, res, next) => {
 router.post("/", async(req, res, next) => {
     const payload = req.body
     const password = req.body.password
-    const confirmPass = req.body.confirmPassword
+    const confirmPass = req.body.passwordConf
  
     const id = req.query.id
  
-    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id firstName")
+    const getUser = await User.findOne({resetPassword: {$regex: id}}).select("id fullname")
     .catch(() => {
         payload.statusMessage = "Something went wrong. Please try again."
         return res.status(400).render("passwordReset", payload)
@@ -50,7 +50,7 @@ router.post("/", async(req, res, next) => {
         return res.status(400).render("passwordReset", payload)
     }
     else {
-         payload.name = getUser.firstName
+         payload.name = getUser.fullname
         if(password !== confirmPass) {
             payload.statusMessage = "Passwords are not the same"
             return res.status(400).render("passwordReset", payload)

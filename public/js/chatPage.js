@@ -134,7 +134,7 @@ function addChatMessageHtml(message) {
 function createMessageHtml(message, nextMessage, lastSenderId) {
 
     var sender = message.sender;
-    var senderName = sender.fullname;
+    var senderName = sender.firstName + " " + sender.lastName;
 
     var currentSenderId = sender._id;
     var nextSenderId = nextMessage != null ? nextMessage.sender._id : "";
@@ -168,14 +168,14 @@ function createMessageHtml(message, nextMessage, lastSenderId) {
     }
 
     return `<li class='message ${liClassName}'>
-                ${imageContainer}
-                <div class='messageContainer'>
-                    ${nameElement}
-                    <span class='messageBody'>
-                        ${message.content}
-                    </span>
-                </div>
-            </li>`;
+            ${imageContainer}
+            <div class='messageContainer'>
+                ${nameElement}
+                <span class='messageBody'>
+                    ${replaceURLs(message.content)}
+                </span>
+            </div>
+        </li>`;
 }
 
 function scrollToBottom(animated) {

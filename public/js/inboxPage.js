@@ -19,3 +19,4 @@ function outputChatList(chatList, container) {
         container.append("<span class='noResults'>Nothing to show.</span>");
     }
 }
+

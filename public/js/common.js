@@ -2,6 +2,44 @@ var cropper;
 var timer;
 var selectedUsers=[];
 
+let initialOrientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+
+if(window.screen.width < 720 && initialOrientation === "portrait" && !navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+    $("nav").css({"display": "show","margin-left":"40px"})
+    $(".mainSectionContainer").removeClass("col-10").addClass("col-12").css("width","70%")
+}
+
+screen.orientation.onchange = function (){
+    if(navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+        return
+    }
+// logs 'portrait' or 'landscape'
+    initialOrientation = screen.orientation.type.match(/\w+/)[0]
+    if(window.screen.width < 720 && initialOrientation === "portrait") {
+        $("nav").css({"display": "show","margin-left":"40px"})
+        $(".mainSectionContainer").removeClass("col-10").addClass("col-12").css("width","70%")
+    }
+    else {
+        $("nav").removeAttr("style")
+        $(".mainSectionContainer").removeClass("col-12").addClass("col-10")
+        $(".date").css("font-size", "1rem")
+    }
+}
+    
+
+const urlParts = ["search", "notifications", "messages", "profile"];
+const url = window.location.href;
+const segments = new URL(url).pathname.split('/');
+const last = segments.pop() || segments.pop(); // Handle potential trailing slash
+if(last === "users") {
+    $("nav a[href='/search']").css("color", "var(--red)");
+}
+urlParts.forEach(page => {
+    if(page === last) {
+        $(`nav a[href="/${page}"]`).css("color", "rgb(13, 143, 242)");
+    }
+});
+
 $(document).ready(() => {
     refreshMessagesBadge();
     refreshNotificationsBadge();
@@ -48,7 +86,7 @@ $("#submitPostButton, #submitReplyButton").click((event) => {
             location.reload();
         }
         else {
-            var html = createPostHtml(postData);
+            var html =  (postData);
             $(".postsContainer").prepend(html);
             textbox.val("");
             button.prop("disabled", true);
@@ -142,6 +180,51 @@ $("#unpinPostButton").click((event) => {
         }
     })
 })
+
+$("#postPhoto").change(function(){    
+    if(this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            var image = document.getElementById("postPreview");
+            image.src = e.target.result;
+
+            if(cropper !== undefined) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 10,
+                background: false
+            });
+
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+})
+
+$("#imagePostButton").click(() => {
+    var canvas = cropper.getCroppedCanvas();
+
+    if(canvas == null) {
+        alert("Could not upload image. Make sure it is an image file.");
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        var formData = new FormData();
+        formData.append("croppedImage", blob);
+
+        $.ajax({
+            url: "/api/posts/postPicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
+    })
+})
+
 
 $("#filePhoto").change(function(){    
     if(this.files && this.files[0]) {
@@ -264,6 +347,7 @@ $("#userSearchTextbox").keydown((event) => {
     }, 1000)
 
 })
+
 
 
 $("#createChatButton").click(() => {
@@ -397,7 +481,7 @@ function getPostIdFromElement(element) {
 function replaceURLs(message) {
 	if (!message) return;
  
-	var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+	var urlRegex = /(((https?:\/\/)|(www\.)|(#))[^\s]+)/g;
 	return message.replace(urlRegex, function (url) {
 		var hyperlink = url;
 		if (!hyperlink.match("^https?://")) {
@@ -427,7 +511,7 @@ function createPostHtml(postData, largeFont=false) {
         return console.log("User object not populated");
     }
 
-    var displayName = postedBy.fullname;
+    var displayName = postedBy.firstName + " " + postedBy.lastName;
     var timestamp = timeDifference(new Date(), new Date(postData.createdAt));
     var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
     var retossButtonActiveClass = postData.retossUsers.includes(userLoggedIn._id) ? "active" : "";
@@ -605,7 +689,7 @@ function outputUsers(results, container) {
 
 function createUserHtml(userData, showFollowButton) {
 
-    var name = userData.fullname;
+    var name = userData.firstName + " " + userData.lastName;
     var isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
     var text = isFollowing ? "Following" : "Follow"
     var buttonClass = isFollowing ? "followButton following" : "followButton"
@@ -670,7 +754,7 @@ function updateSelectedUsersHtml() {
     var elements = [];
 
     selectedUsers.forEach(user => {
-        var name = user.fullname;
+        var name = user.firstName + " " + user.lastName;
         var userElement = $(`<span class='selectedUser'>${name}</span>`);
         elements.push(userElement);
     })
@@ -684,7 +768,7 @@ function getChatName(chatData) {
 
     if(!chatName) {
         var otherChatUsers = getOtherChatUsers(chatData.users);
-        var namesArray = otherChatUsers.map(user => user.fullname);
+        var namesArray = otherChatUsers.map(user => user.firstName + " " + user.lastName);
         chatName = namesArray.join(", ")
     }
 
@@ -802,11 +886,12 @@ function getNotificationText(notification) {
 
     var userFrom = notification.userFrom;
 
-    if(!userFrom.fullname) {
+    if(!userFrom.firstName || !userFrom.lastName) {
         return alert("user from data not populated");
     }
 
-    var userFromName = `${userFrom.fullname}`;
+    var userFromName = `${userFrom.firstName} ${userFrom.lastName}`;
+    
     
     var text;
 
@@ -861,7 +946,7 @@ function createChatHtml(chatData) {
 function getLatestMessage(latestMessage) {
     if(latestMessage != null) {
         var sender = latestMessage.sender;
-        return `${sender.fullname}: ${latestMessage.content}`;
+        return `${sender.firstName} ${sender.lastName}: ${latestMessage.content}`;
     }
 
     return "New chat";
