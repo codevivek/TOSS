@@ -2,6 +2,44 @@ var cropper;
 var timer;
 var selectedUsers=[];
 
+let initialOrientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+
+if(window.screen.width < 720 && initialOrientation === "portrait" && !navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+    $("nav").css({"display": "show","margin-left":"40px"})
+    $(".mainSectionContainer").removeClass("col-10").addClass("col-12").css("width","70%")
+}
+
+screen.orientation.onchange = function (){
+    if(navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+        return
+    }
+// logs 'portrait' or 'landscape'
+    initialOrientation = screen.orientation.type.match(/\w+/)[0]
+    if(window.screen.width < 720 && initialOrientation === "portrait") {
+        $("nav").css({"display": "show","margin-left":"40px"})
+        $(".mainSectionContainer").removeClass("col-10").addClass("col-12").css("width","70%")
+    }
+    else {
+        $("nav").removeAttr("style")
+        $(".mainSectionContainer").removeClass("col-12").addClass("col-10")
+        $(".date").css("font-size", "1rem")
+    }
+}
+    
+
+const urlParts = ["search", "notifications", "messages", "profile"];
+const url = window.location.href;
+const segments = new URL(url).pathname.split('/');
+const last = segments.pop() || segments.pop(); // Handle potential trailing slash
+if(last === "users") {
+    $("nav a[href='/search']").css("color", "var(--red)");
+}
+urlParts.forEach(page => {
+    if(page === last) {
+        $(`nav a[href="/${page}"]`).css("color", "rgb(13, 143, 242)");
+    }
+});
+
 $(document).ready(() => {
     refreshMessagesBadge();
     refreshNotificationsBadge();

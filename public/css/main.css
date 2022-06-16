@@ -47,7 +47,7 @@ nav {
     align-items: flex-end;
     color:var(--red);
     height: 100%;
-    padding-top: 100px;
+    padding-top: 50px;
 }
 
 .navPage {
@@ -132,8 +132,8 @@ button span{
 }
 
 .logo{
-    height:70px;
-    width:80px;
+    height:50px;
+    width:60px;
     float: left;
     margin-top: 10px;
 }
@@ -192,7 +192,6 @@ button span{
     background-color: #ede9e9;
     color: black;
     border: none #ede9e9;
-
 }
 
 .post {
@@ -887,13 +886,19 @@ button span{
         width: 100%;
     }
     
-    .displayName {
+    nav {
         font-weight: 600;
         font-size: 100px;
     }
 }
 
-@media screen and(min-width:767px){
+@media only screen and (max-device-width: 700px) and (orientation: portrait) {
 
+	.postContentContainer .header .date {
+	    flex: unset;
+	}
+
+    nav{
+        margin-left:30px;
+    }
 }
-
