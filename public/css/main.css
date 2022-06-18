@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
 :root {
     --red: #25346c;
     --buttonHoverBg: #eeeeef;
     --lightGrey: rgb(194, 194, 194);
     --spacing: 15px;
-    --greyText: rgb(85, 88, 90);
+    --greyText: rgb(117, 117, 117);
     --greyButtonText: rgba(0,0,0,0.34);
     --green:rgb(19, 184, 19);
 }
@@ -84,7 +84,6 @@ nav {
 }
 
 .wrapper {
-    
     flex-direction: column;
     height: 100%;
 }
@@ -214,18 +213,19 @@ button span{
     display: flex;
     flex-direction: column;
     flex: 1;
+    word-break: break-all;
 }
 
 .username,
 .date {
     color: var(--greyText);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
 }
 
 .displayName {
-    font-weight: 600;
-    font-size: 15px;
+    
+    font-size: 16px;
     font-family: 'Open Sans', sans-serif;
 }
 
