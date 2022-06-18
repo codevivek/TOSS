@@ -4,26 +4,8 @@ mixin createPostForm(userLoggedIn)
             img(src=userLoggedIn.profilePic, alt="Profile picture")
         .textareaContainer
             textarea#postTextarea(placeholder="What's happening?")
-            button.imagePostButton(data-bs-toggle="modal", data-bs-target="#imagePostModal")
-                i.bx.bxs-photo-album
             .buttonsContainer
                 button#submitPostButton(disabled="") Post 
-
-mixin createImagePostModal()
-    #imagePostModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='imagePostModalLabel', aria-hidden='true')
-        .modal-dialog(role='document')
-            .modal-content
-                .modal-header
-                    h5#imagePostModalLabel.modal-title Post a photo
-                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
-                    span(aria-hidden='true') &times;
-                .modal-body
-                    input#postPhoto(type="file", name="filePhoto")
-                    .postPreviewContainer
-                        img#postPreview
-                .modal-footer
-                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
-                    button#imagePostButton.btn.btn-primary(type='button') Save
 
 mixin createReplyModal(userLoggedIn)
     #replyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='replyModalLabel', aria-hidden='true')

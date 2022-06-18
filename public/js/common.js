@@ -13,7 +13,6 @@ screen.orientation.onchange = function (){
     if(navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
         return
     }
-// logs 'portrait' or 'landscape'
     initialOrientation = screen.orientation.type.match(/\w+/)[0]
     if(window.screen.width < 720 && initialOrientation === "portrait") {
         $("nav").css({"display": "show","margin-left":"40px"})
@@ -86,15 +85,13 @@ $("#submitPostButton, #submitReplyButton").click((event) => {
             location.reload();
         }
         else {
-            var html =  (postData);
+            var html = createPostHtml(postData);
             $(".postsContainer").prepend(html);
             textbox.val("");
             button.prop("disabled", true);
         }
     })
 })
-
-
 $("#replyModal").on("show.bs.modal", (event) => {
     var button = $(event.relatedTarget);
     var postId = getPostIdFromElement(button);
@@ -180,51 +177,6 @@ $("#unpinPostButton").click((event) => {
         }
     })
 })
-
-$("#postPhoto").change(function(){    
-    if(this.files && this.files[0]) {
-        var reader = new FileReader();
-        reader.onload = (e) => {
-            var image = document.getElementById("postPreview");
-            image.src = e.target.result;
-
-            if(cropper !== undefined) {
-                cropper.destroy();
-            }
-
-            cropper = new Cropper(image, {
-                aspectRatio: 16 / 10,
-                background: false
-            });
-
-        }
-        reader.readAsDataURL(this.files[0]);
-    }
-})
-
-$("#imagePostButton").click(() => {
-    var canvas = cropper.getCroppedCanvas();
-
-    if(canvas == null) {
-        alert("Could not upload image. Make sure it is an image file.");
-        return;
-    }
-
-    canvas.toBlob((blob) => {
-        var formData = new FormData();
-        formData.append("croppedImage", blob);
-
-        $.ajax({
-            url: "/api/posts/postPicture",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: () => location.reload()
-        })
-    })
-})
-
 
 $("#filePhoto").change(function(){    
     if(this.files && this.files[0]) {
@@ -570,7 +522,6 @@ function createPostHtml(postData, largeFont=false) {
                     <div class='pinnedPostText'>${pinnedPostText}</div>
                         <div class='header'>
                             <a href='/profile/${postedBy.userName}' class='displayName'>${displayName}</a>
-                            <span class='username'>@${postedBy.userName}</span>
                             <span class='date'>${timestamp}</span>
                             ${buttons}
                         </div>
