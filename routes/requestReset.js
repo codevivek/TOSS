@@ -56,12 +56,13 @@ router.post("/", async (req, res, next) => {
         })
  
         var transporter = nodemailer.createTransport({
-            host: "smtp.mailtrap.io",
-            port: 2525,
+            host: "gmail",
             auth: {
-              user: "bfd797a853edb8",
-              pass: "7848829faffcd2"
-            }
+              user: "networktoss@gmail.com",
+              pass: "ejxrvlneezkfogpt"
+            },
+            port:465,
+            host:'smtp.gmail.com'
           });
       
         var mailOptions = {
@@ -72,7 +73,7 @@ router.post("/", async (req, res, next) => {
             <p>Please follow this link to change your password:</p>
             <a href="http://localhost:4000/passwordReset?id=${uniqueId}">Click here</a>
             <br><br>If you don't see the link, please copy and paste this line in your browser's address bar:
-            <p>http://localhost:4000/passwordReset?id=${uniqueId}</p>` 
+            <a href="http://localhost:4000/passwordReset?id=${uniqueId}">http://localhost:4000/passwordReset?id=${uniqueId}</a>` 
         }
       
         transporter.sendMail(mailOptions, async function(error, info){
