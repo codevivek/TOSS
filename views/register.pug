@@ -5,6 +5,7 @@ block content
     .bg.bg2
     .bg.bg3
     .loginContainer 
+        img.logoWelcome(src="/img/logo.png") 
         h2 Register
         form#registerForm(method="post", onsubmit="event.preventDefault(); validateForm();") 
 
@@ -18,7 +19,8 @@ block content
             input#passwordConf(type="password", name="passwordConf",placeholder="Confirm Password" , required="")
             input(type="submit", value="Sign Up") 
         a(href="/login") Already have an account? Login Here. 
-
+    
+    
     script. 
         var passwordField=document.getElementById("password");
         var passwordConfirmField=document.getElementById("passwordConf");
@@ -35,3 +37,5 @@ block content
 
         if (window.history.replaceState)
                 window.history.replaceState(null, null, window.location.href)
+    
+    
