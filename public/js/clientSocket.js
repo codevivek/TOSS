@@ -1,6 +1,6 @@
 var connected = false;
  
-let socket = io(' https://tossnetwork.herokuapp.com/ ') 
+let socket = io.connect();
 // var socket = io("http://localhost:4000")
 socket.emit("setup", userLoggedIn);
  
