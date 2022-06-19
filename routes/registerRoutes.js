@@ -82,7 +82,7 @@ router.post("/",async (req,res,next)=>{
         subject: 'Registration Confirmation',
         html: `Thank you for registering with us. The next step is to verify your identity. 
         <p>Please follow this link to confirm your registration:</p>
-        <a href="http://localhost:4000/login?id=${uniqueId}">Click here</a>` 
+        <a href="https://tossnetwork.herokuapp.com/login?id=${uniqueId}">Click here</a>` 
     }
   
     transporter.sendMail(mailOptions, async function(error, info){
