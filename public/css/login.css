@@ -105,3 +105,25 @@ footer{
   text-align: center;
   font-family: 'Open Sans', sans-serif;
 }
+
+.emailContainer{
+  padding:20px;
+  width:80%;
+  height: 300px;
+  max-width: 500px;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.email{
+  width: 80px;
+  height: 100px;
+}
+
+.emailText{
+  font-size: 20px;
+}

@@ -14,7 +14,11 @@ const UserSchema=new Schema({
     following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     resetPassword: {type: String},
-    verified:{type:Boolean,default:false}
+    status: {
+        type: String, 
+        enum: ['Pending', 'Verified'],
+        default: 'Verified'
+    }
 },{timestamps:true});
 
 var User=mongoose.model('User',UserSchema);
