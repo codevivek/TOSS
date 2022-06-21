@@ -66,6 +66,12 @@ router.post("/",async (req,res,next)=>{
     payload.errorMessage = "Make sure each field has a valid value.";
     res.status(200).render("register", payload);
     } 
+    
+    const getUser = await User.findOne({verified:false})
+    if(getUser == false) {
+        payload.statusMessage = "Please confirm your registration"
+        return res.status(400).render("login", payload)
+    }
     var transporter = nodemailer.createTransport({
         host: "gmail",
         auth: {
