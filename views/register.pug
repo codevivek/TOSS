@@ -10,7 +10,6 @@ block content
         form#registerForm(method="post", onsubmit="event.preventDefault(); validateForm();") 
 
             p.errorMessage #{errorMessage}
-            p #{status}
             input(type="text", name="firstName", placeholder="First name", value=firstName required="")
             input(type="text", name="lastName", placeholder="Last name", value=lastName required="")
             input(type="text", name="userName",placeholder="Username" , value=userName required="")
