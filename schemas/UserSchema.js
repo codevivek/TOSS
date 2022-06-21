@@ -14,7 +14,7 @@ const UserSchema=new Schema({
     following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     resetPassword: {type: String},
-    confirmEmail:{type:String,trim:true}
+    verified:{type:Boolean,default:false}
 },{timestamps:true});
 
 var User=mongoose.model('User',UserSchema);

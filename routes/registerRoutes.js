@@ -66,6 +66,12 @@ router.post("/",async (req,res,next)=>{
     payload.errorMessage = "Make sure each field has a valid value.";
     res.status(200).render("register", payload);
     } 
+    
+    const getUser = await User.findOne({verified:false})
+    if(getUser == false) {
+        payload.statusMessage = "Please confirm your registration"
+        return res.status(400).render("login", payload)
+    }
     var transporter = nodemailer.createTransport({
         host: "gmail",
         auth: {
@@ -82,7 +88,7 @@ router.post("/",async (req,res,next)=>{
         subject: 'Registration Confirmation',
         html: `Thank you for registering with us. The next step is to verify your identity. 
         <p>Please follow this link to confirm your registration:</p>
-        <a href="http://localhost:4000/login?id=${uniqueId}">Click here</a>` 
+        <a href="https://tossnetwork.herokuapp.com/login?id=${uniqueId}">Click here</a>` 
     }
   
     transporter.sendMail(mailOptions, async function(error, info){

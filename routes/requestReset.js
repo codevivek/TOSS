@@ -71,9 +71,9 @@ router.post("/", async (req, res, next) => {
             subject: 'Password change',
             html: `You have requested a password change. 
             <p>Please follow this link to change your password:</p>
-            <a href="http://localhost:4000/passwordReset?id=${uniqueId}">Click here</a>
+            <a href="https://tossnetwork.herokuapp.com/passwordReset?id=${uniqueId}">Click here</a>
             <br><br>If you don't see the link, please copy and paste this line in your browser's address bar:
-            <a href="http://localhost:4000/passwordReset?id=${uniqueId}">http://localhost:4000/passwordReset?id=${uniqueId}</a>` 
+            <a href="https://tossnetwork.herokuapp.com/passwordReset?id=${uniqueId}">https://tossnetwork.herokuapp.com/passwordReset?id=${uniqueId}</a>` 
         }
       
         transporter.sendMail(mailOptions, async function(error, info){

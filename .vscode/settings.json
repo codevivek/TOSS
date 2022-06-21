@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/56d8c92e-e423-4b9e-b956-0977dff36342/microsoft.web/sites/subscriptions/56d8c92e-e423-4b9e-b956-0977dff36342/resourceGroups/tossNetwork/providers/Microsoft.Web/sites/tossNetwork",
+    "appService.deploySubpath": "."
+}
