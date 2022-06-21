@@ -48,7 +48,7 @@ router.post("/",async (req,res,next)=>{
         .then((user) => {
             req.session.user=user;
             payload.status = "We have sent you an email with a link to confirm your registration. If you don't see it in your inbox, please check your spam folder"
-            return res.status(200).render("register", payload)
+            return res.status(200).render("confirmationEmail", payload)
         })
     }
     else {
@@ -60,18 +60,14 @@ router.post("/",async (req,res,next)=>{
             payload.errorMessage = "Username already in use.";
         }
         res.status(200).render("register", payload);
+       
     }
 }
     else {
     payload.errorMessage = "Make sure each field has a valid value.";
     res.status(200).render("register", payload);
     } 
-    
-    const getUser = await User.findOne({verified:false})
-    if(getUser == false) {
-        payload.statusMessage = "Please confirm your registration"
-        return res.status(400).render("login", payload)
-    }
+   
     var transporter = nodemailer.createTransport({
         host: "gmail",
         auth: {
@@ -86,7 +82,7 @@ router.post("/",async (req,res,next)=>{
         from: 'Toss',
         to: email,
         subject: 'Registration Confirmation',
-        html: `Thank you for registering with us. The next step is to verify your identity. 
+        html: `Thank you for registering with us. The next step is to verify your registration. 
         <p>Please follow this link to confirm your registration:</p>
         <a href="https://tossnetwork.herokuapp.com/login?id=${uniqueId}">Click here</a>` 
     }
